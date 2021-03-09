@@ -12,16 +12,17 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-<!-- TODO you should configure the compiler plugin! (use release tag or source/target tags)
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				
+				<configuration>
+          			<source>1.8</source>
+        			<target>1.8</target>
+       			</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	-->
 	<dependencies>
 	</dependencies>
 </project>
