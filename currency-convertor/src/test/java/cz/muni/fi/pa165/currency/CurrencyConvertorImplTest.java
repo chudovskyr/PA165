@@ -1,8 +1,11 @@
 package cz.muni.fi.pa165.currency;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
+import org.mockito.internal.matchers.Null;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -12,8 +15,8 @@ import static org.mockito.Mockito.when;
 
 public class CurrencyConvertorImplTest {
 
-    private Currency EUR = Currency.getInstance("EUR");
-    private Currency CZK = Currency.getInstance("CZK");
+    private final Currency EUR = Currency.getInstance("EUR");
+    private final Currency CZK = Currency.getInstance("CZK");
 
     @Mock
     private ExchangeRateTable exchangeRateTable;
@@ -25,9 +28,11 @@ public class CurrencyConvertorImplTest {
         currencyConvertor = new CurrencyConvertorImpl(exchangeRateTable);
     }
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Test
     public void testConvert() throws ExternalServiceFailureException {
-        // Don't forget to test border values and proper rounding.
         when(exchangeRateTable.getExchangeRate(EUR, CZK)).thenReturn(new BigDecimal("1"));
 
         assertEquals(new BigDecimal("1"), currencyConvertor.convert(EUR, CZK, new BigDecimal("1")));
@@ -39,27 +44,37 @@ public class CurrencyConvertorImplTest {
 
     @Test
     public void testConvertWithNullSourceCurrency() {
-        fail("Test is not implemented yet.");
+        thrown.expect(IllegalArgumentException.class);
+        currencyConvertor.convert(null, CZK, new BigDecimal("1"));
     }
 
     @Test
     public void testConvertWithNullTargetCurrency() {
-        fail("Test is not implemented yet.");
+        thrown.expect(IllegalArgumentException.class);
+        currencyConvertor.convert(EUR, null, new BigDecimal("1"));
     }
 
     @Test
     public void testConvertWithNullSourceAmount() {
-        fail("Test is not implemented yet.");
+        thrown.expect(IllegalArgumentException.class);
+        currencyConvertor.convert(EUR, CZK, null);
     }
 
     @Test
-    public void testConvertWithUnknownCurrency() {
-        fail("Test is not implemented yet.");
+    public void testConvertWithUnknownCurrency() throws ExternalServiceFailureException {
+        when(exchangeRateTable.getExchangeRate(EUR, CZK)).thenReturn(null);
+
+        thrown.expect(UnknownExchangeRateException.class);
+        currencyConvertor.convert(EUR, CZK, new BigDecimal("1"));
     }
 
     @Test
-    public void testConvertWithExternalServiceFailure() {
-        fail("Test is not implemented yet.");
+    public void testConvertWithExternalServiceFailure() throws ExternalServiceFailureException {
+        when(exchangeRateTable.getExchangeRate(EUR, CZK))
+                .thenThrow(ExternalServiceFailureException.class);
+
+        thrown.expect(ExternalServiceFailureException.class);
+        currencyConvertor.convert(EUR, CZK, new BigDecimal("1"));
     }
 
 }
