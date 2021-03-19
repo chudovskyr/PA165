@@ -17,7 +17,7 @@ public class MainJavaConfig {
         ApplicationContext applicationContext
                 = new AnnotationConfigApplicationContext(JavaConfig.class);
 
-        CurrencyConvertor currencyConvertor = applicationContext.getBean(CurrencyConvertor.class);
+        CurrencyConvertor currencyConvertor = applicationContext.getBean("currencyConvertor", CurrencyConvertor.class);
 
         System.out.println(currencyConvertor.convert(EUR, CZK, new BigDecimal("1")));
     }
