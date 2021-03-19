@@ -7,7 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.math.BigDecimal;
 import java.util.Currency;
 
-public class MainAnnotations {
+public class MainJavaConfig {
 
     private static final Currency CZK = Currency.getInstance("CZK");
     private static final Currency EUR = Currency.getInstance("EUR");
@@ -15,7 +15,7 @@ public class MainAnnotations {
     public static void main(String[] args) {
 
         ApplicationContext applicationContext
-                = new AnnotationConfigApplicationContext("cz/muni/fi/pa165/currency");
+                = new AnnotationConfigApplicationContext(JavaConfig.class);
 
         CurrencyConvertor currencyConvertor = applicationContext.getBean(CurrencyConvertor.class);
 
