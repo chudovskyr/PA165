@@ -17,7 +17,7 @@ public class MainAnnotations {
     public static void main(String[] args) {
 
         ApplicationContext applicationContext
-                = new AnnotationConfigApplicationContext(CurrencyConvertorImpl.class, ExchangeRateTableImpl.class);
+                = new AnnotationConfigApplicationContext("cz/muni/fi/pa165/currency");
 
         CurrencyConvertor currencyConvertor = applicationContext.getBean(CurrencyConvertor.class);
 
