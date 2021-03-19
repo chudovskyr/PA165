@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.currency;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
@@ -15,6 +16,7 @@ public class CurrencyConvertorImpl implements CurrencyConvertor {
     private final ExchangeRateTable exchangeRateTable;
     //private final Logger logger = LoggerFactory.getLogger(CurrencyConvertorImpl.class);
 
+    @Inject
     public CurrencyConvertorImpl(ExchangeRateTable exchangeRateTable) {
         this.exchangeRateTable = exchangeRateTable;
     }
